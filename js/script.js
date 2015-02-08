@@ -35,7 +35,9 @@ function loadData() {
     //NYT AJAX request
     var key =  // key goes here
     var URL = "http://api.nytimes.com/svc/search/v2/articlesearch.json?callback=svc_search_v2_articlesearch&q="+city+"&sort=newest&api-key="+key
+    //loop through response and add relvant pieces to ul elment id=nytimes-articles
     $.getJSON(URL, function(data){
+        $("#nytimes-header").append(" About "+city.toUpperCase());
         var items = [];
         for(var i = 0; i < data.response.docs.length; i++) {
             var article = data.response.docs[i];
@@ -44,6 +46,9 @@ function loadData() {
         }
         
         console.log(data);
+    }).error(function(){
+         $("#nytimes-header").append(" Could not be loaded!");
+
     });
     return false;
 };
