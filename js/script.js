@@ -41,16 +41,43 @@ function loadData() {
         var items = [];
         for(var i = 0; i < data.response.docs.length; i++) {
             var article = data.response.docs[i];
-            console.log(article)
+            //console.log(article)
              $("#nytimes-articles").append('<li class="article">' + '<a href="' + article.web_url + '">' + article.headline.main + '</a>' + '<p>' + article.snippet + '</p>' + '</li>')
         }
         
         console.log(data);
+    //adds error handeler of ajax request 
     }).error(function(){
-         $("#nytimes-header").append(" Could not be loaded!");
+         $("#nytimes-header").append(" Could Not Be Loaded!");
 
     });
+
+    //wikipedia request
+    var wikiUrl = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' + city + '&format=json&callback=wikiCallback';
+    var wikiRequestTimeout = setTimeout(function(){
+        $wikiElem.text("failed to get wikipedia resources");
+    }, 8000);
+
+    $.ajax({
+        url: wikiUrl,
+        dataType: "jsonp",
+        jsonp: "callback",
+        success: function( response ) {
+            var articleList = response[1];
+
+            for (var i = 0; i < articleList.length; i++) {
+                articleStr = articleList[i];
+                var url = 'http://en.wikipedia.org/wiki/' + articleStr;
+                $wikiElem.append('<li><a href="' + url + '">' + articleStr + '</a></li>');
+            };
+
+            clearTimeout(wikiRequestTimeout);
+        }
+    });
+
     return false;
+
+
 };
 
 $('#form-container').submit(loadData);
