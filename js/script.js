@@ -28,7 +28,7 @@ function loadData() {
     }
     else {
         var imgParam = imgBase  + street  + "," + city
-        $greeting.text("So you want to live at " + street +"? Really, i heard it was a shit hole...")
+        $greeting.text("So you want to live at " + street +"? Really, i heard it wasn't that nice...")
     };
     $body.append('<img class="bgimg" src="'+imgParam+'">');
 
